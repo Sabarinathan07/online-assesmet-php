@@ -48,7 +48,19 @@
 					return 2; 
 				}
 			}
-		}	
+		}
+		
+		public function updateScore($quizid ,$username, $score, $date){
+
+			$stmt = $this->con->prepare("INSERT INTO `scoreboard` (`id`, `quizid`, `username`, `score`, `date`) VALUES (NULL, ?, ?, ?, ?);");
+			$stmt->bind_param("ssss",$quizid,$username,$score,$date);
+			
+			if($stmt->execute()){
+				return 1;
+			}else{
+				return 2;
+			}
+		}
 
 		public function userLogin($username, $password){
 			//$password = md5($pass);
@@ -86,7 +98,9 @@
 			// 	return 2; 
 			// }
 		}
+		
 
+	
 		public function getUserByUsername($username){
 			$stmt = $this->con->prepare("SELECT * FROM teacher WHERE username = ?");
 			$stmt->bind_param("s",$username);
@@ -115,7 +129,74 @@
 			$stmt->execute(); 
 			$stmt->store_result(); 
 			return $stmt->num_rows > 0; 
+			}
+
+			public function getQuestions($quizid){
+				$query = "SELECT * FROM questions WHERE quizid = '$quizid' ";
+				//$query->bind_param("s",$quizid)
+				$questionsArr= array();
+				$result = mysqli_query($this->con, $query);
+				if (mysqli_num_rows($result) > 0) {
+					
+					 while($row = mysqli_fetch_assoc($result)) {
+					//   echo "id : " . $row["questionid"]. 
+					//    "\n Name: " . $row["question"]. 
+					//    "\n Option1: " . $row["choice1"]. 
+					//    "\n Option2: " . $row["choice2"]. 
+					//    "\n Option3: " . $row["choice3"]. 
+					//  "\n <br>"  ;
+					  array_push($questionsArr,$row);
+					}
+					echo json_encode($questionsArr);
+				  } else {
+					echo "0 results";
+				  }
+			}	
+
+		// public function getQuestions(){
+		// 	$query = "SELECT * FROM questions WHERE quizid = ";
+		// 	$questionsArr= array();
+		// 	$result = mysqli_query($this->con, $query);
+		// 	if (mysqli_num_rows($result) > 0) {
+				
+		// 		 while($row = mysqli_fetch_assoc($result)) {
+		// 		//   echo "id : " . $row["questionid"]. 
+		// 		//    "\n Name: " . $row["question"]. 
+		// 		//    "\n Option1: " . $row["choice1"]. 
+		// 		//    "\n Option2: " . $row["choice2"]. 
+		// 		//    "\n Option3: " . $row["choice3"]. 
+		// 		//  "\n <br>"  ;
+		// 		  array_push($questionsArr,$row);
+		// 		}
+		// 		echo json_encode($questionsArr);
+		// 	  } else {
+		// 		echo "0 results";
+		// 	  }
+		// }
+
+		
+
+		public function getTopics(){
+			$query = "SELECT * FROM quiz " ;
+			$topicsArr = array();
+			$result = mysqli_query($this->con, $query);
+			if(mysqli_num_rows($result)>0){
+				while($row = mysqli_fetch_assoc($result)){
+					array_push($topicsArr,$row);
+					}
+				echo json_encode($topicsArr);	
+			}else{
+				echo "0 results";
+			}
+
+
+
+
 		}
+
+
+
+
 
 	}
 	?>

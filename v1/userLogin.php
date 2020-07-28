@@ -6,7 +6,7 @@ $response = array();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
 	if(isset($_POST['username']) and isset($_POST['password'])){
-		$db = new DbOperations(); 
+		$db = new DbOperations();  
 
 		$result = $db->userLogin($_POST['username'] , $_POST['password']);
 
@@ -17,10 +17,6 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 			$response['username'] = $teacher['username']; 
 		}else{
 			$response['error'] = true; 
-			// $teacher = $db->getUserByUsername($_POST['username']);
-			// $response['id'] = $teacher['id'];
-			// $response['username'] = $teacher['username']; 
-		
 			$response['message'] = "Invalid username or password!!!";			
 		}
 
