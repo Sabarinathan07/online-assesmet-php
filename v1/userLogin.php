@@ -15,6 +15,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 			$response['error'] = false; 
 			$response['id'] = $teacher['id'];
 			$response['username'] = $teacher['username']; 
+			$response['message'] = "Teacher Login Succesful";	
 		}else{
 			$response['error'] = true; 
 			$response['message'] = "Invalid username or password!!!";			

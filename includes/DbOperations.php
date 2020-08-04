@@ -131,6 +131,20 @@
 			return $stmt->num_rows > 0; 
 			}
 
+			public function getResults($quizid){
+				$query = "SELECT * FROM `scoreboard` WHERE quizid = $quizid ORDER BY score DESC ";
+				$resultArr = array();
+			$result = mysqli_query($this->con, $query);
+			if(mysqli_num_rows($result)>0){
+				while($row = mysqli_fetch_assoc($result)){
+					array_push($resultArr,$row);
+					}
+				echo json_encode($resultArr);	
+			}else{
+				echo "0 results";
+			}
+			}
+
 			public function getQuestions($quizid){
 				$query = "SELECT * FROM questions WHERE quizid = '$quizid' ";
 				//$query->bind_param("s",$quizid)
